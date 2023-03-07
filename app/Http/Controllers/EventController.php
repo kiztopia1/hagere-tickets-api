@@ -14,20 +14,21 @@ class EventController extends Controller
         return Event::all();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:255',
+            'date' => "required|date_format:Y-m-d",
+            'price' => 'required|numeric|min:0'
+        ]);
+        return Event::create($request->all());
     }
 
-    /**
-     * Display the specified resource.
-     */
+    
     public function show(string $id)
     {
-        //
+        return Event::find($id);
     }
 
     /**
@@ -35,14 +36,21 @@ class EventController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $event = Event::find($id);
+        $event->update($request->all());
+        return $event;
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function delete(string $id)
     {
-        //
+        return Event::destroy($id);
+    }
+
+    public function search(string $name)
+    {
+        return Event::where('name', 'like', '%'.$name.'%' )->get();
     }
 }
