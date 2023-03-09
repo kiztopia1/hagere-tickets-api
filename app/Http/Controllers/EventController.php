@@ -22,7 +22,14 @@ class EventController extends Controller
             'date' => "required|date_format:Y-m-d",
             'price' => 'required|numeric|min:0'
         ]);
-        return Event::create($request->all());
+
+        $event= [
+            'name' => $request->name,
+            'date' => $request->date,
+            'price' => $request->price,
+            'user_id' => auth()->user()->id
+        ];
+        return Event::create($event);
     }
 
     
@@ -52,5 +59,9 @@ class EventController extends Controller
     public function search(string $name)
     {
         return Event::where('name', 'like', '%'.$name.'%' )->get();
+    }
+    public function search_by_tag(string $tag)
+    {
+        return Event::where('tags', 'like', '%'.$tag.'%' )->get();
     }
 }

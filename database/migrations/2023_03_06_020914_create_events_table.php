@@ -15,9 +15,17 @@ return new class extends Migration
             $table->uuid('id')->primary();;
             $table->string('name');
             $table->decimal('price',5,2);
-            $table->date('date');
+            $table->when('date');
             $table->string('description')->nullable();
+            $table->string('overview')->nullable();
             $table->timestamps();
+            $table->string('tags')->nullable();
+            $table->string('location');
+            $table->string('slug')->nullable();
+            $table->string('refund_policy')->nullable();
+            $table->string('thumbnail');
+            $table->uuid('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('Cascade');
         });
     }
 
